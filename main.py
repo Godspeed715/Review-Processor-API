@@ -8,7 +8,7 @@ import os
 
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from psycopg2.extras import RealDictCursor
 
 from functions.review import process_reviews
@@ -51,8 +51,9 @@ def get_reviews(matric_no: str, conn):
 
 # Example of how this could be exposed as an API endpoint in the future.
 @app.route("/api/reviews", methods=['POST'])
-async def get_reviews_api(matric_no: str):
+async def get_reviews_api():
     # Use the async review processing pipeline instead of a direct DB query.
+    matric_no = request.get_json()['matric_no']
     merged_reviews = await process_reviews(matric_no, get_conn())
     return {"reviews": merged_reviews}
 
