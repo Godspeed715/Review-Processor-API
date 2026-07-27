@@ -1,0 +1,120 @@
+:root {
+    --bg-color: #f4f4f9;
+    --card-bg: #ffffff;
+    --primary: #0070f3;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --error-bg: #fee2e2;
+    --error-text: #b91c1c;
+    --border: #eaeaea;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    margin: 0;
+}
+
+.container {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 600px;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primary);
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
+
+button:disabled {
+    background-color: #a0c9fa;
+    cursor: not-allowed;
+}
+
+/* Status & Error Messages */
+#status-message {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    display: none;
+}
+
+#error-message {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    display: none;
+}
+
+/* Review List */
+.review-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.review-item {
+    background: var(--bg-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    border: 1px solid var(--border);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem 0;
+    font-style: italic;
+}

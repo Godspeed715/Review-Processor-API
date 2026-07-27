@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Dashboard</title>
+    <!-- Flask url_for helper for CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Review Dashboard</h1>
+        
+        <form id="search-form" class="form-group">
+            <input 
+                type="text" 
+                id="matric-input" 
+                placeholder="Enter Matric Number (e.g., 12345)" 
+                required 
+            />
+            <button type="submit" id="search-btn">Search</button>
+        </form>
+
+        <div id="status-message">Loading reviews...</div>
+        <div id="error-message"></div>
+
+        <ul id="reviews-container" class="review-list">
+            <!-- Reviews will be injected here via JavaScript -->
+        </ul>
+    </div>
+
+    <!-- Flask url_for helper for JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
