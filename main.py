@@ -60,5 +60,7 @@ async def get_reviews_api(matric_no: str):
 def home():
     return jsonify({"status":"succes", "message": "Welcome home"})
 
+if __name__ == '__main__':
+    app.run(debug=True)
 # Print a sample result when the file is run directly.
 # print(get_reviews("24CG036163"))
