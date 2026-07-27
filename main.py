@@ -8,7 +8,7 @@ import os
 
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from psycopg2.extras import RealDictCursor
 
 from functions.review import process_reviews
@@ -54,13 +54,17 @@ def get_reviews(matric_no: str, conn):
 async def get_reviews_api():
     # Use the async review processing pipeline instead of a direct DB query.
     matric_no = request.args.get("matric_no", "").strip()
-    
+
     merged_reviews = await process_reviews(matric_no, get_conn())
-    return {"reviews": merged_reviews}
+    return jsonify({"reviews": merged_reviews})
 
 @app.route("/home", methods=['GET'])
 def home():
     return jsonify({"status":"succes", "message": "Welcome home"})
+
+@app.route("/", methods=["GET"])
+def review_page():
+    return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
