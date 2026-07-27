@@ -86,7 +86,14 @@ async def process_reviews(matric_no: str, conn):
     """Fetch reviews, group similar ones, and merge them into concise summaries."""
     try:
         # Use local sample rows until the database-backed version is fully wired up.
-        rows = ["Daisy is very nice", "She is so cute", "She is fu**ing everyone", "she is very nice looking", "she is beautiful"]
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT review_data FROM reviews WHERE matric_no=%s", (matric_no,))
+                data = cur.fetchall()
+
+        rows = [review["review_data"] for review in data]
+        print(rows)
+
         if not rows:
             return []
 
@@ -98,7 +105,7 @@ async def process_reviews(matric_no: str, conn):
         sentences_with_vectors = [{"text": text, "vector": vector} for text, vector in zip(rows, vectors)]
 
         clusters = []
-        SIMILARITY_THRESHOLD = 0.70
+        SIMILARITY_THRESHOLD = 0.73
 
         # Group reviews that are similar enough to be considered the same idea.
         for item in sentences_with_vectors:
@@ -113,14 +120,14 @@ async def process_reviews(matric_no: str, conn):
 
         final_sentences = []
         # Keep standalone reviews as-is.
-        final_sentences.append([cluster[0]["text"] for cluster in clusters if len(cluster) == 1])
+        final_sentences += [cluster[0]["text"] for cluster in clusters if len(cluster) == 1]
 
         # Merge groups with multiple related reviews into one summary sentence.
         clusters_to_merge = [cluster[0]["text"] for cluster in clusters if len(cluster) >= 2]
         async with TaskGroup() as tg:
             tasks = [tg.create_task(merge_sentences(cluster)) for cluster in clusters_to_merge]
 
-        final_sentences.append([task.result() for task in tasks])
+        final_sentences += [task.result() for task in tasks]
         logger.info(f"Processed reviews for matric_no={matric_no}")
         return final_sentences
     except Exception as e:
