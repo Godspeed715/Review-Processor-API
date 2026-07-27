@@ -50,10 +50,11 @@ def get_reviews(matric_no: str, conn):
 
 
 # Example of how this could be exposed as an API endpoint in the future.
-@app.route("/api/reviews", methods=['POST'])
+@app.route("/api/reviews", methods=['GET'])
 async def get_reviews_api():
     # Use the async review processing pipeline instead of a direct DB query.
-    matric_no = request.get_json()['matric_no']
+    matric_no = request.args.get("matric_no", "").strip()
+    
     merged_reviews = await process_reviews(matric_no, get_conn())
     return {"reviews": merged_reviews}
 
